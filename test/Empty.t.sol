@@ -3,6 +3,7 @@ pragma solidity ^0.8.19;
 
 import { Test, stdJson } from "forge-std/Test.sol";
 import {BananaMerkle} from "../src/BananaMerkle.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract EmptyTest_Unit is Test {
     using stdJson for string;
@@ -23,28 +24,17 @@ contract EmptyTest_Unit is Test {
         uint256 _value;
     }
 
-    struct Tmp {
-        bytes32 _address;
-        bytes32 _leaf;
-        bytes32 _proof;
-        bytes32 _value;
-    }
+    ProofToTest[]  proofs;
 
     function setUp() public {
         bananaMerkle = new BananaMerkle();
         bananaMerkle.updateRoot(root);
 
-        string memory json = vm.readFile('./test/proofs.json');
+        ProofToTest[] memory _proofsTmp;
+        bytes memory _parsedJson = vm.parseJson(vm.readFile('./test/proofs.json'));
+        _proofsTmp = abi.decode(_parsedJson, (ProofToTest[]));
 
-        bytes memory _proofs = vm.parseJson(json);
-
-        ProofToTest[] memory proofs = abi.decode(_proofs, (ProofToTest[]));
-
-        emit log_address(proofs[0]._address);
-        emit log_bytes32(proofs[0]._leaf);
-        emit log_bytes32(proofs[0]._proof);
-        emit log_uint(proofs[0]._value);
-        
+        for(uint256 i; i < _proofsTmp.length; i++) proofs.push(_proofsTmp[i]);
     }
 
     function test_claimerCanClaimOnce() public {
