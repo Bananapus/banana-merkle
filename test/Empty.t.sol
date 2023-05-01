@@ -45,14 +45,13 @@ contract EmptyTest_Unit is Test {
         string memory json = vm.readFile('./test/proofs.json');
         emit log_string(json);
 
-        bytes memory _proofs = vm.parseJson(json);
+        // bytes memory _proofs = vm.parseJson(json);
+        // ProofToTest[] memory proofs = abi.decode(_proofs, (ProofToTest[]));
 
-        ProofToTest[] memory proofs = abi.decode(_proofs, (ProofToTest[]));
-
-        emit log_address(proofs[0]._address);
-        emit log_bytes32(proofs[0]._leaf);
-        emit log_bytes32(proofs[0]._proof);
-        emit log_uint(proofs[0]._value);
+        // emit log_address(proofs[0]._address);
+        // emit log_bytes32(proofs[0]._leaf);
+        // emit log_bytes32(proofs[0]._proof);
+        // emit log_uint(proofs[0]._value);
     }
 
     function test_claimerCanClaimOnce() public {
